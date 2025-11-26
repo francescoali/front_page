@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edgine | The Local Routing Engine</title>
+    <meta name="description" content="AI Routing on-premise per Sanità e BPO. Azzera le code senza inviare dati al Cloud.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --bg-color: #0f172a; /* Dark Navy for Enterprise feel */
+            --text-color: #f8fafc;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981; /* Privacy signal */
+            --card-bg: #1e293b;
+            --font-main: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- LAYOUT UTILITIES --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-blue);
+            color: white;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--text-color);
+            margin-left: 10px;
+        }
+
+        .btn-outline:hover {
+            background-color: white;
+            color: var(--bg-color);
+        }
+
+        /* --- HEADER --- */
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+        
+        .logo span { color: var(--accent-blue); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+        }
+
+        /* --- VIDEO DEMO SECTION --- */
+        .demo-section {
+            background-color: var(--card-bg);
+            padding: 60px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .video-container {
+            max-width: 900px;
+            margin: 30px auto 0;
+            aspect-ratio: 16 / 9;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Placeholder style for when video is missing */
+        .video-placeholder {
+            color: #94a3b8;
+            font-size: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .play-icon { font-size: 3rem; margin-bottom: 15px; color: var(--accent-blue); }
+
+        /* --- FEATURES GRID --- */
+        .features {
+            padding: 80px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.03);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 { margin-bottom: 10px; font-size: 1.25rem; }
+        .feature-card p { color: #94a3b8; font-size: 0.95rem; }
+
+        /* --- CONTACT / AUDIT --- */
+        .cta-section {
+            text-align: center;
+            padding: 100px 0;
+            background: linear-gradient(180deg, var(--bg-color) 0%, var(--card-bg) 100%);
+        }
+
+        .cta-box {
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid var(--accent-blue);
+            padding: 40px;
+            border-radius: 16px;
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            font-size: 0.8rem;
+            color: #64748b;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .btn { width: 100%; margin: 10px 0 0 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Edgine<span>.</span></div>
+                <div>
+                    <a href="mailto:info@edgine.it" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.8rem;">Contattaci</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Privacy-First Intent Routing.<br><span class="highlight">100% Offline.</span></h1>
+            <p>
+                L'Intelligenza Artificiale che smista i clienti, elimina le code e protegge i dati sensibili. 
+                Nessun dato va sul Cloud. Nessuna latenza.
+            </p>
+            <div>
+                <a href="#demo" class="btn btn-primary">Guarda la Demo</a>
+                <a href="mailto:audit@edgine.it?subject=Richiesta%20Audit%20Dati" class="btn btn-outline">Richiedi Audit Gratuito</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="demo-section">
+        <div class="container">
+            <small style="text-transform: uppercase; letter-spacing: 2px; color: var(--accent-blue); font-weight: bold;">Edgine in azione</small>
+            <h2>Vedi come funziona in "Modalità Aereo"</h2>
+            <p style="color: #94a3b8; margin-top: 10px;">Stacchiamo il WiFi e il routing continua a funzionare. Zero dipendenze.</p>
+            
+            <div class="video-container">
+                <div class="video-placeholder">
+                    <div class="play-icon">▶</div>
+                    <p>Caricamento Video Demo...</p>
+                    <p style="font-size: 0.8rem; margin-top: 10px;">(Registrazione Offline Mode in arrivo)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>GDPR Compliant & Sicuro</h3>
+                    <p>Ideale per Sanità e BPO. I dati dei pazienti/clienti vengono processati localmente sulla CPU. Niente lascia il tuo perimetro.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Latenza Zero (<50ms)</h3>
+                    <p>Dimentica i tempi di attesa delle API Cloud. Il nostro modello quantizzato risponde istantaneamente, anche su hardware datato.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔌</div>
+                    <h3>Zero-Install Deployment</h3>
+                    <p>Nessun Docker o Python richiesto per il test. Scarica lo ZIP portatile, clicca "Avvia" e sei operativo in 30 secondi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" style="padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05);">
+        <h2 style="text-align: center; margin-bottom: 40px;">Progettato per settori critici</h2>
+        <div class="grid" style="margin-top: 0;">
+            <div style="background: #1e293b; padding: 20px; border-radius: 8px;">
+                <h4 style="color: var(--accent-blue);">🏥 Cliniche Private</h4>
+                <p style="font-size: 0.9rem; color: #cbd5e1; margin-top: 10px;">Automatizza il triage delle richieste pazienti senza rischiare sanzioni privacy.</p>
+            </div>
+            <div style="background: #1e293b; padding: 20px; border-radius: 8px;">
+                <h4 style="color: var(--accent-green);">📞 BPO & Call Center</h4>
+                <p style="font-size: 0.9rem; color: #cbd5e1; margin-top: 10px;">Riduci l'AHT instradando le chiamate all'operatore giusto prima che rispondano.</p>
+            </div>
+            <div style="background: #1e293b; padding: 20px; border-radius: 8px;">
+                <h4 style="color: #f59e0b;">⚡ Utility Locali</h4>
+                <p style="font-size: 0.9rem; color: #cbd5e1; margin-top: 10px;">Gestisci i picchi di richieste durante i guasti, anche se la connessione internet vacilla.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-box">
+                <h2>Pronto a spegnere il Cloud?</h2>
+                <p style="margin: 20px 0; color: #94a3b8;">
+                    Iniziamo con un Audit dei tuoi dati storici. Ti mostriamo quanti clienti stai perdendo a causa di un routing inefficiente.
+                </p>
+                <a href="mailto:founder@edgine.it" class="btn btn-primary" style="font-size: 1.1rem;">Parla con il Founder</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Edgine. The Local Routing Engine. Designed in Sicily.</p>
+            <p style="margin-top: 10px; font-size: 0.7rem; opacity: 0.5;">Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+
+</body>
+</html>
